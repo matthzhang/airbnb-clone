@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+// tailwind setup: npx tailwindcss init -p
 module.exports = {
   content: [
     "./index.html",
