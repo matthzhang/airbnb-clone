@@ -11,11 +11,13 @@ const app = express();
 const bcryptSalt = bcrypt.genSaltSync(10);
 //mongo credentials: username = zhan7342, pw = Potatoes5!
 const jwtSecret = 'asdfasdfasdfasdf';
-
+//laptop: http://127.0.0.1:5173
+//pc: http://localhost:5173
+//need to add ip address of every additional machine used (go to mongoDB project to add)
 app.use(express.json());
 app.use(cors({
     credentials: true,
-    origin: 'http://localhost:5173'
+    origin: 'http://127.0.0.1:5173'
 }));
 
 mongoose.connect(process.env.MONGO_URL)
