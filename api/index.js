@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const { default: mongoose } = require('mongoose');
 const User = require('./models/User');
 const bcrypt = require('bcryptjs');
+const cookieParser = require("cookie-parser");
 require('dotenv').config();
 const app = express();
 
@@ -15,6 +16,7 @@ const jwtSecret = 'asdfasdfasdfasdf';
 //pc: http://localhost:5173
 //need to add ip address of every additional machine used (go to mongoDB project to add)
 app.use(express.json());
+app.use(cookieParser);
 app.use(cors({
     credentials: true,
     origin: 'http://127.0.0.1:5173'
@@ -49,7 +51,7 @@ app.post('/login', async (req, res) => {
         if(passOk){
             jwt.sign({email:userDoc.email, id:userDoc._id}, jwtSecret, {}, (err, token) => {
                 if(err) throw err;
-                res.cookie('token', token).json('pass ok');
+                res.cookie('token', token).json(userDoc);
             });
         }
         else{
@@ -60,5 +62,20 @@ app.post('/login', async (req, res) => {
         res.status(422).json('user not found');
     }
 })
+
+app.get('/profile', (req, res) => {
+    const {token} = req.cookies;
+    if(token){
+        jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+            if(err) throw err;
+            const {name, email, _id} = await User.findById(userData.id);
+            res.json({name, email, _id});
+        });
+    }
+    else{
+        res.json(null);
+    }
+    res.json({token});
+});
 
 app.listen(4000);
