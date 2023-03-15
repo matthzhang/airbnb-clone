@@ -61,7 +61,7 @@ app.post('/login', async (req, res) => {
     else{
         res.status(422).json('user not found');
     }
-})
+});
 
 app.get('/profile', (req, res) => {
     const {token} = req.cookies;
