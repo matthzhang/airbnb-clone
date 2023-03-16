@@ -16,10 +16,10 @@ const jwtSecret = 'asdfasdfasdfasdf';
 //pc: http://localhost:5173
 //need to add ip address of every additional machine used (go to mongoDB project to add)
 app.use(express.json());
-app.use(cookieParser);
+app.use(cookieParser());
 app.use(cors({
     credentials: true,
-    origin: 'http://127.0.0.1:5173'
+    origin: 'http://localhost:5173'
 }));
 
 mongoose.connect(process.env.MONGO_URL)
@@ -75,7 +75,6 @@ app.get('/profile', (req, res) => {
     else{
         res.json(null);
     }
-    res.json({token});
 });
 
 app.listen(4000);

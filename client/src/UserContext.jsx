@@ -5,6 +5,7 @@ export const UserContext = createContext({});
 export function UserContextProvider({children}) {
     const [user, setUser] = useState(null); 
     useEffect(() => {
+        //if user is empty try to get user info
         if(!user){
             axios.get('/profile').then(({data}) => {
                 setUser(data);         
