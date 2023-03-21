@@ -1,6 +1,6 @@
 import axios from "axios";
-import { useState } from "react";
-import { Navigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Navigate, useParams } from "react-router-dom";
 import AccountNav from "../AccountNav";
 import Perks from "../Perks";
 import PhotosUploader from "../PhotosUploader";
@@ -13,9 +13,27 @@ export default function PlacesFormPage() {
     const [perks, setPerks] = useState([]);
     const [extraInfo, setExtraInfo] = useState('');
     const [checkIn, setCheckIn] = useState('');
-    const [checkOut, setCehckOut] = useState('');
+    const [checkOut, setCheckOut] = useState('');
     const [maxGuests, setMaxGuests] = useState(1);
     const [redirect, setRedirect] = useState(false);
+    const {id} = useParams();
+    useEffect(() => {
+        if(!id){
+            return;
+        }
+        axios.get('/places/' + id).then(response => {
+            const {data} = response;
+            setTitle(data.title);
+            setAddress(data.address);
+            setAddedPhotos(data.photos);
+            setDescription(data.description);
+            setPerks(data.perks);
+            setExtraInfo(data.extraInfo);
+            setCheckIn(data.checkIn);
+            setCheckOut(data.checkOut);
+            setMaxGuests(data.maxGuests);
+        });
+    }, [id]);
 
     function inputHeader(text) {
         return (
@@ -101,7 +119,7 @@ export default function PlacesFormPage() {
                         <h3 className="mt-2 -mb-1">Check out time</h3>
                         <input type="text" 
                             value={checkOut} 
-                            onChange={ev => setCehckOut(ev.target.value)} placeholder="14"
+                            onChange={ev => setCheckOut(ev.target.value)} placeholder="14"
                         />
                     </div>
                     <div>
