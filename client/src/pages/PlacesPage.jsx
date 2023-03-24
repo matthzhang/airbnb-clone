@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import AccountNav from "../AccountNav";
-
+//4:15:43 for each child in list should have unqiue key prop
 export default function PlacesPage(){
     const [places, setPlaces] = useState([]);
     useEffect(() => {
@@ -23,7 +23,7 @@ export default function PlacesPage(){
                     </Link>
                 </div>
                 <div className="mt-4">
-                    {places.length > 0 && places.map(place => (
+                    {places.length > 0 && places.map((place) => (
                         <Link to={'/account/places/' + place._id} className="flex cursor-pointer gap-4 bg-gray-100 p-4 rounded-2xl">
                             <div className="flex w-32 h-32 bg-gray-300 grow shrink-0">
                                 {place.photos.length > 0 && (
